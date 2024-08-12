@@ -247,40 +247,37 @@ export default async function handler(
   }
 
   if (req.method === "DELETE") {
+    // Simulasi menghapus pengguna
     const { id } = req.query;
 
     // Validasi ID
     if (!id || isNaN(Number(id))) {
-        return deleteErrorHandler(
-            res,
-            400,
-            "invalid_id",
-            "Invalid ID provided."
-        );
+      return deleteErrorHandler(
+        res,
+        400,
+        "invalid_id",
+        "Invalid ID provided."
+      );
     }
 
     const userId = Number(id);
 
-    // Simulasi menghapus pengguna
-    const userIndex = allUsers.findIndex((user) => user.id === userId);
-    
-    // Jika data tidak ditemukan
-    if (userIndex === -1) {
-        return deleteErrorHandler(
-            res,
-            404,
-            "not_found",
-            "User not found."
-        );
-    }
+    // Simulasi menghapus dari data pengguna
+    allUsers = allUsers.filter((user) => user.id !== userId);
 
-    // Menghapus data pengguna yang ditemukan
-    allUsers.splice(userIndex, 1);
+    // Jika data tidak ditemukan
+    if (allUsers.find((user) => user.id === userId)) {
+      return deleteErrorHandler(
+        res,
+        404,
+        "not_found",
+        `User with ID ${userId} not found.`
+      );
+    }
 
     // Berikan respons sukses tanpa konten
     return baseDeleteResponse(res);
-}
-
+  }
 
   // Metode tidak didukung
   return res.status(405).json({
