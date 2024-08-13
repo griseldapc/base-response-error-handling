@@ -26,7 +26,7 @@ export default async function handler(
   ];
 
   // Simulasi server error
-  const simulateServerError = true; // Ubah ke true untuk menguji error 500
+  const simulateServerError = false; // Ubah ke true untuk menguji error 500
 
   if (simulateServerError) {
     return res.status(500).json({
@@ -184,6 +184,7 @@ export default async function handler(
   }
 
   if (req.method === "PUT" || req.method === "PATCH") {
+    console.log( `PUT`)
     // Periksa tipe media
     const contentType = req.headers["content-type"] || "";
 
@@ -198,6 +199,11 @@ export default async function handler(
     }
 
     const { username, first_name, last_name, password } = req.body;
+    console.log({
+      username,
+      first_name,
+      last_name
+    })
 
     // Validasi data
     const errors: Array<{ code: string; detail: string; attr: string | null }> = [];
